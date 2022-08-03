@@ -73,7 +73,7 @@ class WeatherCard extends StatelessWidget {
                     "$temp°",
                     style: TextStyle(
                         fontSize: tempFontSize ?? 45,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         color: Theme.of(context).textTheme.bodyText1!.color),
                   ),
                 ),

@@ -10,8 +10,32 @@ class Home extends StatefulWidget {
   State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   int currentIndex = 0;
+  late AnimationController _controller;
+  late Animation<Offset> _animation;
+  @override
+  void initState() {
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    )..forward();
+    _animation = Tween<Offset>(
+      begin: const Offset(1, 0.0),
+      end: const Offset(0, 0.0),
+    ).animate(CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,30 +73,35 @@ class _HomeState extends State<Home> {
       body: SafeArea(
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Padding(
-                padding: EdgeInsets.only(left: 20.0, top: 10),
-                child: Text(
-                  "Good Morning",
-                  style: TextStyle(
-                      fontSize: 35, fontWeight: FontWeight.w600, height: 1.2),
+          child: SlideTransition(
+            position: _animation,
+            transformHitTests: true,
+            textDirection: TextDirection.ltr,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Padding(
+                  padding: EdgeInsets.only(left: 20.0, top: 10),
+                  child: Text(
+                    "Good Morning",
+                    style: TextStyle(
+                        fontSize: 35, fontWeight: FontWeight.w600, height: 1.2),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 20.0),
-                child: Text(
-                  "27 March, Monday",
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                Padding(
+                  padding: EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    "27 March, Monday",
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              WeatherLocations(),
-              Favourite()
-            ],
+                SizedBox(
+                  height: 30,
+                ),
+                WeatherLocations(),
+                Favourite()
+              ],
+            ),
           ),
         ),
       ),
