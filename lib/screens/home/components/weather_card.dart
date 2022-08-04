@@ -30,8 +30,7 @@ class WeatherCard extends StatelessWidget {
         Navigator.push(
           context,
           PageTransition(
-              child: const WeatherDetails(),
-              type: PageTransitionType.bottomToTop),
+              child: const WeatherDetails(), type: PageTransitionType.fade),
         );
       },
       child: Container(

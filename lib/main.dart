@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:weather/screens/home/home.dart';
+import 'package:weather/screens/onboarding/onboarding.dart';
 import 'package:weather/theme.dart';
 
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Weather',
       theme: getThemeData(),
       debugShowCheckedModeBanner: false,
-      home: const Home(),
+      home: const OnBoarding(),
     );
   }
 }
