@@ -27,18 +27,21 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  concentric_transition: ^1.0.3
   cupertino_icons: ^1.0.2
+  dio: ^4.0.6
   fl_chart: ^0.55.0
   flutter:
     sdk: flutter
   flutter_iconly: ^1.0.2
   intl: ^0.17.0
+  lottie: ^1.4.1
   page_transition: ^2.0.9
+  shared_preferences: ^2.0.15
   sliding_clipped_nav_bar:
     git:
       url: https://github.com/watery-desert/sliding_clipped_nav_bar
   sliding_up_panel: ^2.0.0+1
-  concentric_transition: ^1.0.3
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -60,6 +63,7 @@ flutter:
     - assets/3dIcons/star/
     - assets/3dIcons/moon/
     - assets/3dIcons/cloud/
+    - assets/
 
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
