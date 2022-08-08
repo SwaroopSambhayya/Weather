@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
@@ -10,6 +12,14 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   TextEditingController textEditingController = TextEditingController();
+  Timer? debounce;
+
+  @override
+  void dispose() {
+    debounce?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,6 +29,12 @@ class _SearchState extends State<Search> {
           TextField(
             controller: textEditingController,
             autofocus: true,
+            onChanged: (text) {
+              if (text.length >= 3) {
+                if (debounce?.isActive ?? false) debounce!.cancel();
+                debounce = Timer(const Duration(milliseconds: 500), (() {}));
+              }
+            },
             decoration: InputDecoration(
               prefixIcon: const SizedBox(
                 width: 70,

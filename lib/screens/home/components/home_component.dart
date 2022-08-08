@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:weather/screens/home/components/weather_card.dart';
 
-class HomeComponent extends StatelessWidget {
+class HomeComponent extends StatefulWidget {
   const HomeComponent({
     Key? key,
     required Animation<Offset> animation,
@@ -11,6 +11,11 @@ class HomeComponent extends StatelessWidget {
 
   final Animation<Offset> _animation;
 
+  @override
+  State<HomeComponent> createState() => _HomeComponentState();
+}
+
+class _HomeComponentState extends State<HomeComponent> {
   getGreeting() {
     if (DateTime.now().hour > 12 && DateTime.now().minute > 0) {
       return "Good Evening";
@@ -20,12 +25,13 @@ class HomeComponent extends StatelessWidget {
 
   Future<void> getWeather() async {
     await Future.delayed(const Duration(seconds: 2));
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return SlideTransition(
-      position: _animation,
+      position: widget._animation,
       transformHitTests: true,
       textDirection: TextDirection.ltr,
       child: RefreshIndicator(
@@ -33,32 +39,34 @@ class HomeComponent extends StatelessWidget {
         color: const Color(0xff5375E9),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, top: 10),
-                child: Text(
-                  getGreeting(),
-                  style: const TextStyle(
-                      fontSize: 35, fontWeight: FontWeight.w600, height: 1.2),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0, top: 10),
+                  child: Text(
+                    getGreeting(),
+                    style: const TextStyle(
+                        fontSize: 35, fontWeight: FontWeight.w600, height: 1.2),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0),
-                child: Text(
-                  intl.DateFormat('dd MMMM, EEEE').format(DateTime.now()),
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    intl.DateFormat('dd MMMM, EEEE').format(DateTime.now()),
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
                 ),
-              ),
-
-              const SizedBox(
-                height: 30,
-              ),
-              //ErrorComponent(),
-              const WeatherLocations(),
-              const Favourite()
-            ],
+                const SizedBox(
+                  height: 30,
+                ),
+                //ErrorComponent(),
+                const WeatherLocations(),
+                const Favourite()
+              ],
+            ),
           ),
         ),
       ),
