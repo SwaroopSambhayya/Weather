@@ -8,11 +8,11 @@ class DioInstance {
   factory DioInstance({
     bool settingConfig = false,
     String? baseURL,
-    String? appVersion,
+    String? apiKey,
   }) {
     if (settingConfig) {
       _singleton.baseURL = baseURL!;
-      _singleton.apiKey = appVersion!;
+      _singleton.apiKey = apiKey!;
     }
     return _singleton;
   }
@@ -21,4 +21,8 @@ class DioInstance {
     BaseOptions options = BaseOptions();
     dio = Dio(options);
   }
+}
+
+initializeDio(String baseURL, String apiKey) {
+  DioInstance(settingConfig: true, baseURL: baseURL, apiKey: apiKey);
 }

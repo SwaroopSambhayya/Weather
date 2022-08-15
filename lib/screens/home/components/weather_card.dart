@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:weather/models/weather.dart';
 import 'package:weather/screens/weatherDetails/weather_details.dart';
 
 class WeatherCard extends StatelessWidget {
@@ -30,7 +31,10 @@ class WeatherCard extends StatelessWidget {
         Navigator.push(
           context,
           PageTransition(
-              child: const WeatherDetails(), type: PageTransitionType.fade),
+              child: WeatherDetails(
+                weather: Weather(),
+              ),
+              type: PageTransitionType.fade),
         );
       },
       child: Container(

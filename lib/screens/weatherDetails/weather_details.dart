@@ -1,11 +1,12 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:weather/models/weather.dart';
 import 'package:weather/screens/weatherDetails/components/chart.dart';
 
 class WeatherDetails extends StatefulWidget {
-  const WeatherDetails({Key? key}) : super(key: key);
+  final Weather weather;
+  const WeatherDetails({Key? key, required this.weather}) : super(key: key);
 
   @override
   State<WeatherDetails> createState() => _WeatherDetailsState();
@@ -21,7 +22,9 @@ class _WeatherDetailsState extends State<WeatherDetails>
   void initState() {
     super.initState();
     animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 500))
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    )
       ..forward()
       ..addListener(() {
         if (animationController.isCompleted) {
@@ -36,6 +39,16 @@ class _WeatherDetailsState extends State<WeatherDetails>
       parent: animationController,
       curve: Curves.linear,
     ));
+  }
+
+  String getAsset() {
+    if (widget.weather.weather![0].icon.contains('d')) {
+      return "assets/3dIcons/day/${widget.weather.weather?[0].icon}.png";
+    }
+    return File("assets/3dIcons/night/${widget.weather.weather?[0].icon}.png")
+            .existsSync()
+        ? "assets/3dIcons/night/${widget.weather.weather?[0].icon}.png"
+        : "assets/3dIcons/day/${widget.weather.weather?[0].icon}.png";
   }
 
   Widget _floatingPanel(BuildContext context) {
@@ -53,9 +66,8 @@ class _WeatherDetailsState extends State<WeatherDetails>
               height: 4,
               margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.blue[400],
-                borderRadius: BorderRadius.circular(10),
-              ),
+                  color: Colors.blue[400],
+                  borderRadius: BorderRadius.circular(10)),
             ),
             const SizedBox(
               height: 15,
@@ -135,20 +147,24 @@ class _WeatherDetailsState extends State<WeatherDetails>
                     duration: const Duration(milliseconds: 500),
                     opacity: textOpacity,
                     child: Column(
-                      children: const [
+                      children: [
                         Text(
-                          "Los Angeles",
-                          style: TextStyle(
+                          widget.weather.name!,
+                          style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w600,
                               fontSize: 30),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Text(
-                          "Chance of rain: 3%",
-                          style: TextStyle(
+                          widget.weather.weather![0].description.replaceRange(
+                              0,
+                              1,
+                              widget.weather.weather![0].description[0]
+                                  .toUpperCase()),
+                          style: const TextStyle(
                               color: Color(0xffC9E6FF),
                               fontWeight: FontWeight.w600,
                               fontSize: 17),
@@ -166,14 +182,34 @@ class _WeatherDetailsState extends State<WeatherDetails>
                           child: AnimatedOpacity(
                             duration: const Duration(milliseconds: 500),
                             opacity: textOpacity,
-                            child: const Text(
-                              "23°",
+                            child: Text.rich(
+                              TextSpan(children: [
+                                TextSpan(
+                                  text: '${widget.weather.main!.temp!.floor()}',
+                                  style: const TextStyle(
+                                    fontSize: 150,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xffEAF3FC),
+                                  ),
+                                ),
+                                const WidgetSpan(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 40.0,
+                                    ),
+                                    child: Text(
+                                      '°',
+                                      style: TextStyle(
+                                        fontSize: 80,
+                                        fontWeight: FontWeight.w700,
+                                        color:
+                                            Color.fromARGB(255, 239, 244, 250),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ]),
                               textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 150,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xffEAF3FC),
-                              ),
                             ),
                           ),
                         ),
@@ -182,12 +218,14 @@ class _WeatherDetailsState extends State<WeatherDetails>
                             builder: (context, child) {
                               return Transform.translate(
                                 offset: Offset(
-                                    MediaQuery.of(context).size.width / 2 - 80,
+                                    MediaQuery.of(context).size.width * 0.6 -
+                                        MediaQuery.of(context).size.width / 2.5,
                                     animation.value),
                                 child: Image.asset(
-                                  "assets/3dIcons/moon/20.png",
+                                  getAsset(),
                                   fit: BoxFit.contain,
-                                  width: 170,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.6,
                                 ),
                               );
                             }),
@@ -198,18 +236,21 @@ class _WeatherDetailsState extends State<WeatherDetails>
                             opacity: textOpacity,
                             duration: const Duration(milliseconds: 500),
                             child: Column(
-                              children: const [
-                                Text(
+                              children: [
+                                const Text(
                                   "Wind",
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 10),
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                  ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
-                                  "9 km/h",
-                                  style: TextStyle(color: Colors.white),
+                                  "${widget.weather.wind!.speed!.round()} m/s",
+                                  style: const TextStyle(color: Colors.white),
                                 )
                               ],
                             ),
@@ -222,18 +263,18 @@ class _WeatherDetailsState extends State<WeatherDetails>
                             opacity: textOpacity,
                             duration: const Duration(milliseconds: 500),
                             child: Column(
-                              children: const [
-                                Text(
+                              children: [
+                                const Text(
                                   "Humidity",
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 10),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Text(
-                                  "80%",
-                                  style: TextStyle(color: Colors.white),
+                                  "${widget.weather.main!.humidity}%",
+                                  style: const TextStyle(color: Colors.white),
                                 )
                               ],
                             ),

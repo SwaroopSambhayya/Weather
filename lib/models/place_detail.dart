@@ -47,12 +47,12 @@ class Prediction {
   });
 
   factory Prediction.fromJson(Map<String, dynamic> json) => Prediction(
-        description: json["description"],
+        description: json["description"] ?? "",
         matchedSubstrings: List<MatchedSubstring>.from(
             json["matched_substrings"]
                 .map((x) => MatchedSubstring.fromJson(x))),
-        placeId: json["place_id"],
-        reference: json["reference"],
+        placeId: json["place_id"] ?? "",
+        reference: json["reference"] ?? "",
         structuredFormatting:
             StructuredFormatting.fromJson(json["structured_formatting"]),
         terms: List<Term>.from(json["terms"].map((x) => Term.fromJson(x))),
@@ -105,11 +105,11 @@ class StructuredFormatting {
 
   factory StructuredFormatting.fromJson(Map<String, dynamic> json) =>
       StructuredFormatting(
-        mainText: json["main_text"],
+        mainText: json["main_text"] ?? "",
         mainTextMatchedSubstrings: List<MatchedSubstring>.from(
             json["main_text_matched_substrings"]
                 .map((x) => MatchedSubstring.fromJson(x))),
-        secondaryText: json["secondary_text"],
+        secondaryText: json["secondary_text"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -137,5 +137,35 @@ class Term {
   Map<String, dynamic> toJson() => {
         "offset": offset,
         "value": value,
+      };
+}
+
+Location locationFromJson(String str) {
+  final jsonData = json.decode(str);
+  return Location.fromJson(jsonData);
+}
+
+String locationToJson(Location data) {
+  final dyn = data.toJson();
+  return json.encode(dyn);
+}
+
+class Location {
+  double lat;
+  double lng;
+
+  Location({
+    required this.lat,
+    required this.lng,
+  });
+
+  factory Location.fromJson(Map<String, dynamic> json) => Location(
+        lat: json["lat"].toDouble(),
+        lng: json["lng"].toDouble(),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "lat": lat,
+        "lng": lng,
       };
 }

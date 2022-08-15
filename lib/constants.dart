@@ -17,3 +17,6 @@ List<OnboaridngData> onboardingDetails = [
       textColors: const Color.fromARGB(255, 56, 96, 228),
       buttonColor: const Color.fromARGB(255, 56, 96, 228)),
 ];
+
+const mapBaseURL = "https://maps.googleapis.com/maps/api";
+const weatherBaseURL = "https://api.openweathermap.org/data/2.5/weather";

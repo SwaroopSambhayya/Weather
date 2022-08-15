@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:sliding_clipped_nav_bar/sliding_clipped_nav_bar.dart';
 import 'package:weather/screens/home/components/home_component.dart';
-import 'package:weather/screens/home/components/search_component.dart';
+import 'package:weather/screens/home/components/search/search_component.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
