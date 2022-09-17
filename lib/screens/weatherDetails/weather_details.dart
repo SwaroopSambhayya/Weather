@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:weather/models/weather.dart';
 import 'package:weather/screens/weatherDetails/components/chart.dart';
+import 'package:weather/screens/weatherDetails/components/floatingpanel.dart';
 
 class WeatherDetails extends StatefulWidget {
   final Weather weather;
@@ -48,62 +49,7 @@ class _WeatherDetailsState extends State<WeatherDetails>
     return File("assets/3dIcons/night/${widget.weather.weather?[0].icon}.png")
             .existsSync()
         ? "assets/3dIcons/night/${widget.weather.weather?[0].icon}.png"
-        : "assets/3dIcons/day/${widget.weather.weather?[0].icon}.png";
-  }
-
-  Widget _floatingPanel(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(50.0)),
-        ),
-        margin: const EdgeInsets.all(15.0),
-        child: Column(
-          children: [
-            Container(
-              width: 55,
-              height: 4,
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: Colors.blue[400],
-                  borderRadius: BorderRadius.circular(10)),
-            ),
-            const SizedBox(
-              height: 15,
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding:
-                    const EdgeInsets.all(20.0).copyWith(left: 30, bottom: 10),
-                child: const Text(
-                  "Future weather",
-                  textAlign: TextAlign.start,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-                ),
-              ),
-            ),
-            const FutureWeatherList(
-                temp: "15",
-                week: "Monday",
-                date: "18th August",
-                asset: "assets/3dIcons/cloud/17.png"),
-            const FutureWeatherList(
-                temp: "20",
-                week: "Tuesday",
-                date: "19th August",
-                asset: "assets/3dIcons/sun/8.png"),
-            const FutureWeatherList(
-                temp: "18",
-                week: "Tuesday",
-                date: "19th August",
-                asset: "assets/3dIcons/sun/26.png"),
-            const SizedBox(height: 50)
-          ],
-        ),
-      ),
-    );
+        : "assets/3dIcons/day/${widget.weather.weather?[0].icon.replaceFirst("n", "d")}.png";
   }
 
   @override
@@ -111,12 +57,14 @@ class _WeatherDetailsState extends State<WeatherDetails>
     return Material(
       child: SlidingUpPanel(
         minHeight: Platform.isIOS ? 70 : 50,
-        maxHeight: MediaQuery.of(context).size.height * 0.65,
+        maxHeight: MediaQuery.of(context).size.height * 0.70,
         backdropEnabled: true,
         backdropColor: Colors.blue,
         backdropOpacity: 0.4,
         renderPanelSheet: false,
-        panel: _floatingPanel(context),
+        panel: FloatingPanel(
+          location: widget.weather.coord!,
+        ),
         body: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: AppBar(
@@ -290,72 +238,6 @@ class _WeatherDetailsState extends State<WeatherDetails>
           ),
         ),
       ),
-    );
-  }
-}
-
-class FutureWeatherList extends StatelessWidget {
-  final String temp;
-  final String week;
-  final String date;
-  final String asset;
-  const FutureWeatherList({
-    Key? key,
-    required this.temp,
-    required this.week,
-    required this.date,
-    required this.asset,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 70,
-          height: 70,
-          margin:
-              const EdgeInsets.only(left: 30, right: 20, top: 15, bottom: 15),
-          decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Color(0xffE8F2FA), Colors.white],
-                  stops: [0.3, 0.9],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter),
-              shape: BoxShape.circle),
-          child: Center(
-            child: Image.asset(
-              asset,
-              width: 40,
-            ),
-          ),
-        ),
-        Flexible(
-          child: Container(
-            width: 180,
-            height: 70,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                border: Border.all(color: Colors.grey[200]!)),
-            child: ListTile(
-              contentPadding: const EdgeInsets.only(left: 25),
-              leading: Text(
-                "$temp°",
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.w600,
-                    color: Theme.of(context).textTheme.bodyText1!.color),
-              ),
-              title: Text(
-                week,
-                style:
-                    const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-              ),
-              subtitle: Text(date, style: const TextStyle(fontSize: 10)),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

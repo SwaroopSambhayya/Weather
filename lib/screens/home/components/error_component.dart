@@ -6,25 +6,45 @@ import 'package:weather/services/error_helper.dart';
 
 class ErrorComponent extends StatelessWidget {
   final DioError error;
-  const ErrorComponent({Key? key, required this.error}) : super(key: key);
+  final double? illustrationWidth;
+  final double? illustartionHeight;
+  final double? titleFontSize;
+  final double? subtitleFontSize;
+
+  const ErrorComponent(
+      {Key? key,
+      required this.error,
+      this.illustartionHeight,
+      this.illustrationWidth,
+      this.titleFontSize,
+      this.subtitleFontSize})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Error errorType = getDioErrorMessage(error);
     return Column(
       children: [
-        Lottie.asset(errorType.asset, fit: BoxFit.contain, repeat: false),
+        Lottie.asset(errorType.asset,
+            fit: BoxFit.contain,
+            repeat: false,
+            width: illustrationWidth,
+            height: illustartionHeight),
         Column(
           children: [
             Text(
               errorType.title,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: titleFontSize ?? 24, fontWeight: FontWeight.w600),
             ),
             const SizedBox(
               height: 10,
             ),
-            Text(errorType.subtitle)
+            Text(
+              errorType.subtitle,
+              style: TextStyle(fontSize: subtitleFontSize),
+            )
           ],
         )
       ],

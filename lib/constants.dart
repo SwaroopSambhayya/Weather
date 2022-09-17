@@ -19,4 +19,4 @@ List<OnboaridngData> onboardingDetails = [
 ];
 
 const mapBaseURL = "https://maps.googleapis.com/maps/api";
-const weatherBaseURL = "https://api.openweathermap.org/data/2.5/weather";
+const weatherBaseURL = "https://api.openweathermap.org/data/2.5";
