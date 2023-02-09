@@ -1,6 +1,9 @@
 # weather
 
-A new Flutter project.
+A Weather app with 3d UI built in Flutter
+
+<img width="1015" alt="Screenshot 2023-02-09 at 3 05 08 PM" src="https://user-images.githubusercontent.com/31922733/217774360-67298a7c-8026-4051-999f-4fda138d5176.png">
+
 
 ## Getting Started
 
